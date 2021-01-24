@@ -4,6 +4,7 @@ import de.herhold.server.model.Item;
 import de.herhold.server.repository.ItemRepository;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -21,8 +22,8 @@ public class ItemService {
         return Objects.requireNonNull(itemFlux.collectList().block()).hashCode();
     }
 
-    public Item createItem(Item item) {
-        return itemRepository.save(item).block();
+    public Mono<Item> createItem(Item item) {
+        return itemRepository.save(item);
     }
 
     public Flux<Item> getList() {

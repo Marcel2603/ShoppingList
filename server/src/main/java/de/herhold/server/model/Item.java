@@ -15,5 +15,5 @@ public class Item {
     @Id
     private Integer id;
     private String name;
-    private Integer amount = 1;
+    private String amount = "1";
 }
