@@ -11,7 +11,7 @@ paths:
       description: tbd
       operationId: createItem
       tags:
-        - item
+        - shopping
       requestBody:
         description: item to be created
         required: true
@@ -29,13 +29,15 @@ paths:
         default:
           description: something bad happens
           content:
-            text/event-stream:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Error"
   /item/{id}:
     delete:
       description: delete an Item from DB
       operationId: deleteItem
+      tags:
+        - shopping
       parameters:
         - name: id
           in: path
@@ -50,7 +52,7 @@ paths:
         default:
           description: something bad happens
           content:
-            text/event-stream:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Error"
   /items:
@@ -59,7 +61,7 @@ paths:
       description: tbd
       operationId: getItems
       tags:
-        - items
+        - shopping
       responses:
         '200':
           description: All items from DB
@@ -79,7 +81,7 @@ paths:
       description: tbd
       operationId: getHash
       tags:
-        - items
+        - shopping
       responses:
         '200':
           description: hashvalue
@@ -90,7 +92,7 @@ paths:
         default:
           description: something bad happens
           content:
-            text/event-stream:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Error"
 components:

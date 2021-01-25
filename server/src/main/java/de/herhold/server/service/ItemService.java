@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -19,14 +21,28 @@ public class ItemService {
 
     public int getListHash() {
         Flux<Item> itemFlux = itemRepository.findAll();
-        return Objects.requireNonNull(itemFlux.collectList().block()).hashCode();
+        List<Item> itemList = new ArrayList<>();
+        itemFlux.log()
+                .subscribe(itemList::add);
+        return itemList.hashCode();
     }
 
-    public Mono<Item> createItem(Item item) {
-        return itemRepository.save(item);
+    public  Mono<Item> createItem(Mono<Item> item) {
+        item.log().map(this::test);
+        return item;
+    }
+
+    private Item test(Item item) {
+        item.setId(8);
+        return item;
     }
 
     public Flux<Item> getList() {
         return itemRepository.findAll();
+    }
+
+    public Mono<Void> deleteItemWithId(Integer id) {
+        System.out.println("deleting");
+        return itemRepository.deleteById(id);
     }
 }
