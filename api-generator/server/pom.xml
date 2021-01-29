@@ -42,6 +42,7 @@
                                 <modelPackage>${default.package}.model</modelPackage>
                                 <invokerPackage>${default.package}.handler</invokerPackage>
                                 <interfaceOnly>true</interfaceOnly>
+                                <skipDefaultInterface>true</skipDefaultInterface>
                             </configOptions>
                         </configuration>
                     </execution>

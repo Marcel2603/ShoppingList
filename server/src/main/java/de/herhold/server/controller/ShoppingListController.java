@@ -8,17 +8,13 @@ import de.herhold.shopping_list.api.java_server.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import javax.validation.Valid;
-import java.time.Duration;
 
 
 /**
@@ -52,29 +48,32 @@ public class ShoppingListController implements ShoppingApi {
 
     @Override
     public Mono<ResponseEntity<de.herhold.shopping_list.api.java_server.model.Item>> createItem(@Valid Mono<de.herhold.shopping_list.api.java_server.model.Item> item, ServerWebExchange exchange) {
-       /* Mono<Item> dbItem = item.log().map(itemMapper::convertItem);
-        item.subscribe(  value -> System.out.println(value),
-                error -> error.printStackTrace(),
-                () -> System.out.println("completed without a value"));
-        Item item2 = new Item();
-        item2.setAmount("500g");
-        item2.setName("TEST");
-        dbItem.subscribe();
-        dbItem = itemService.createItem(item2);
-        System.out.println(item2);*/
-        return Mono.just(new ResponseEntity<>(item.publishOn(Schedulers.immediate()).block((Duration.ofMillis(500))),HttpStatus.CREATED));
+        item.log().subscribe(System.out::println);
+        return Mono.just(new ResponseEntity<>(HttpStatus.CREATED));
     }
 
-
+    /**
+     * Leider ist das item immer null. Wenn ich @ModelAttribute wähle dann sind die attribute im Item null. Das Objekt an
+     * sich existiert dann aber.
+     * @param item
+     * @param exchange
+     * @return
+     */
     @PostMapping(value = "/item1")
-    public Mono<ResponseEntity<Mono<Item>>> createItem(@RequestBody() de.herhold.shopping_list.api.java_server.model.Item item) {
-        Mono<de.herhold.shopping_list.api.java_server.model.Item> itemMono = Mono.just(item);
-        Mono<Item> mappedMono = itemMono.map(itemMapper::convertItem);
+    public Mono<ResponseEntity<de.herhold.shopping_list.api.java_server.model.Item>> testcreateItem(@ModelAttribute Mono<de.herhold.shopping_list.api.java_server.model.Item> item, ServerWebExchange exchange) {
+        System.out.println("Input");
+        item.log().subscribe(System.out::println);
+        System.out.println("InputOut");
+        de.herhold.shopping_list.api.java_server.model.Item test = new de.herhold.shopping_list.api.java_server.model.Item();
+        test.setName("name");
+        test.setAmount("amount");
+        Mono<de.herhold.shopping_list.api.java_server.model.Item> testMono = Mono.just(test);
+        testMono.subscribe(System.out::println);
+        Mono<Item> mappedMono = testMono.map(itemMapper::convertItem);
 
         System.out.println("CreaetdMono");
-        /*Item mappedItem = itemMapper.convertItem(item);
-        Mono<Item> createdItem = itemService.createItem(mappedItem);*/
-        return Mono.just(new ResponseEntity<>(itemService.createItem(mappedMono), HttpStatus.CREATED));
+        itemService.createItem(mappedMono);
+        return Mono.just(new ResponseEntity<>(HttpStatus.CREATED));
     }
 
     @Override
