@@ -36,9 +36,8 @@ public class ShoppingListController implements ShoppingApi {
     @Override
     public Flux<Item> getItems(ServerWebExchange exchange) {
         Flux<de.herhold.server.model.Item> itemFlux = itemService.getList();
-        Flux<de.herhold.shopping_list.api.java_server.model.Item> mappedFlux = itemFlux.log().publishOn(Schedulers.newParallel("ItemMapper"))
+        return itemFlux.log().publishOn(Schedulers.newParallel("ItemMapper"))
                 .map(itemMapper::mapItem);
-        return mappedFlux;
     }
 
     @Override
@@ -51,11 +50,6 @@ public class ShoppingListController implements ShoppingApi {
 
     @Override
     public Mono<Item> createItem(@Valid @RequestBody Mono<Item> item, ServerWebExchange exchange) {
-        return itemService.createItem(item.map(itemMapper::convertItem)).map(itemMapper::mapItem);
-    }
-
-    @PostMapping(value = "/test")
-    public Mono<Item> test(@RequestBody Mono<Item> item, ServerWebExchange exchange) {
         return itemService.createItem(item.map(itemMapper::convertItem)).map(itemMapper::mapItem);
     }
 
