@@ -26,7 +26,8 @@ public class ItemService {
         return itemList.hashCode();
     }
 
-    public  Mono<Item> createItem(Mono<Item> item) {
+    public Mono<Item> createItem(Mono<Item> item) {
+        Item dbItem = new Item();
         return item.map(this::saveItemToDB);
     }
 
