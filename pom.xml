@@ -13,10 +13,6 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- dependency versions -->
-        <!-- general versions -->
-        <!--lombok.version>30</lombok.version-->
     </properties>
 
     <modules>

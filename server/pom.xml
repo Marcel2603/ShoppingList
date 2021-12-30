@@ -16,51 +16,45 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-framework.version>5.3.3</spring-framework.version>
+        <lombok.version>1.18.16</lombok.version>
         <spring-boot.version>2.4.0</spring-boot.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <r2dbc-mysql.version>0.8.2.RELEASE</r2dbc-mysql.version>
+
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>de.herhold.shopping-list</groupId>
+            <artifactId>api-spring-server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <!--dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
-            <version>${spring-framework.version}</version>
-        </dependency-->
-
+        <!-- Spring and Spring-Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
 
-        <!--dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency-->
-
-
-        <!--dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency-->
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-r2dbc -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-r2dbc</artifactId>
-            <version>1.2.3</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Database deps -->
 
         <dependency>
             <groupId>io.r2dbc</groupId>
@@ -73,15 +67,18 @@
             <artifactId>h2</artifactId>
         </dependency>
 
+        <!-- Other -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
-            <groupId>de.herhold.shopping-list</groupId>
-            <artifactId>api-spring-server</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -90,8 +87,15 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

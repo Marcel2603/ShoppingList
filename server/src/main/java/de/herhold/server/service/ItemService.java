@@ -8,7 +8,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class ItemService {
@@ -27,13 +26,14 @@ public class ItemService {
         return itemList.hashCode();
     }
 
-    public  Mono<Item> createItem(Mono<Item> item) {
-        item.log().map(this::test);
-        return item;
+    public Mono<Item> createItem(Mono<Item> item) {
+        Item dbItem = new Item();
+        return item.map(this::saveItemToDB);
     }
 
-    private Item test(Item item) {
-        item.setId(8);
+    private Item saveItemToDB(Item item) {
+        Mono<Item> savedMono = itemRepository.save(item);
+        savedMono.subscribe(item1 -> item.setId(item1.getId()));
         return item;
     }
 

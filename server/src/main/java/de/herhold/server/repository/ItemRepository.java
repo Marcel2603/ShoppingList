@@ -11,6 +11,6 @@ public interface ItemRepository extends ReactiveCrudRepository<Item, Integer> {
 
     Flux<Item> findAll();
 
-    Mono<Item> save(Mono<Item> item);
+    //Mono<Item> save(Mono<Item> item);
 
 }
