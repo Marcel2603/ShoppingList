@@ -1,0 +1,134 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: ShoppingList Api
+servers:
+  - url: http://localhost:8080
+paths:
+  /item:
+    post:
+      summary: Creates an Item
+      description: tbd
+      operationId: createItem
+      tags:
+        - shopping
+      requestBody:
+        description: item to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '201':
+          description: item created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        default:
+          description: something bad happens
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /item/{id}:
+    delete:
+      description: delete an Item from DB
+      operationId: deleteItem
+      tags:
+        - shopping
+      parameters:
+        - name: id
+          in: path
+          description: id of the item
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: item deleted
+        default:
+          description: something bad happens
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /items:
+    get:
+      summary: List of items
+      description: tbd
+      operationId: getItems
+      tags:
+        - shopping
+      responses:
+        '200':
+          description: All items from DB
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/Items"
+        default:
+          description: something bad happens
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /items/hash:
+    get:
+      summary: hashcode of the itemsDB
+      description: tbd
+      operationId: getHash
+      tags:
+        - shopping
+      responses:
+        '200':
+          description: hashvalue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        default:
+          description: something bad happens
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Items:
+      type: array
+      items:
+        $ref: "#/components/schemas/Item"
+    Item:
+      type: object
+      required:
+        - name
+        - amount
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        amount:
+          type: string
+    Response:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

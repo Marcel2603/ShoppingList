@@ -15,5 +15,11 @@ public class Item {
     @Id
     private Integer id;
     private String name;
-    private Integer amount = 1;
+    private String amount = "1";
+
+    public void clone(Item item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.amount = item.getAmount();
+    }
 }
