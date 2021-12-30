@@ -1,25 +1,14 @@
 package de.herhold.server.mapper;
 
 import de.herhold.server.model.Item;
-import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-@Component
-public class ItemMapper {
+@Mapper
+public interface ItemMapper {
+    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
-    @SneakyThrows
-    public de.herhold.shopping_list.api.java_server.model.Item mapItem(Item item) {
-        de.herhold.shopping_list.api.java_server.model.Item mappedItem = new de.herhold.shopping_list.api.java_server.model.Item();
-        mappedItem.setName(item.getName());
-        mappedItem.setAmount(item.getAmount());
-        mappedItem.setId(item.getId());
-        return mappedItem;
-    }
+    de.herhold.shopping_list.api.java_server.model.Item mapItem(Item item);
 
-    public Item convertItem(de.herhold.shopping_list.api.java_server.model.Item item) {
-        Item convertedItem = new Item();
-        convertedItem.setName(item.getName());
-        convertedItem.setAmount(item.getAmount());
-        return convertedItem;
-    }
+    Item convertItem(de.herhold.shopping_list.api.java_server.model.Item item);
 }

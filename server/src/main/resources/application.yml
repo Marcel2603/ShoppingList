@@ -3,8 +3,9 @@ logging:
     de.herhold.server: DEBUG
     root: Info
 spring:
-  datasource:
+  r2dbc:
     url: r2dbc:h2:mem:mydb;MODE=PostgreSQL
-    driver-class-name: org.h2.Driver
     username: sa
     password: pw
+server:
+  port: 9000

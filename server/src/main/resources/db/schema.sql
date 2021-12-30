@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS item (
-    id int NOT NULL AUTO_INCREMENT,
+    id SERIAL,
     name VARCHAR(255),
     amount VARCHAR(255) DEFAULT '1x',
     PRIMARY KEY (id)

@@ -12,6 +12,7 @@
 
     <artifactId>api-spring-server</artifactId>
     <name>java-server-api</name>
+    <packaging>jar</packaging>
 
     <properties>
         <default.package>de.herhold.shopping-list.api.java-server</default.package>
@@ -32,17 +33,14 @@
                         <configuration>
                             <inputSpec>${project.basedir}/../shoppinglist-api.yml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <templateDirectory>${project.basedir}/../templates</templateDirectory>
                             <configOptions>
                                 <library>spring-boot</library>
-                                <reactive>true</reactive>
                                 <dateLibrary>java8</dateLibrary>
+                                <reactive>true</reactive>
                                 <useTags>true</useTags>
                                 <apiPackage>${default.package}.handler</apiPackage>
                                 <modelPackage>${default.package}.model</modelPackage>
                                 <invokerPackage>${default.package}.handler</invokerPackage>
-                                <templateDir>${project.basedir}/../templates</templateDir>
-                                <serializableModel>true</serializableModel>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                         </configuration>

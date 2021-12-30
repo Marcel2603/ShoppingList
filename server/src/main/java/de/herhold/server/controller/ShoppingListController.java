@@ -5,16 +5,14 @@ import de.herhold.server.service.ItemService;
 import de.herhold.shopping_list.api.java_server.handler.ShoppingApi;
 import de.herhold.shopping_list.api.java_server.model.Item;
 import de.herhold.shopping_list.api.java_server.model.Response;
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import javax.validation.Valid;
 
@@ -26,37 +24,36 @@ import javax.validation.Valid;
 public class ShoppingListController implements ShoppingApi {
 
     private final ItemService itemService;
-    private final ItemMapper itemMapper;
 
-    public ShoppingListController(ItemService itemService, ItemMapper itemMapper) {
+    public ShoppingListController(ItemService itemService) {
         this.itemService = itemService;
-        this.itemMapper = itemMapper;
     }
 
     @Override
-    public Flux<Item> getItems(ServerWebExchange exchange) {
-        Flux<de.herhold.server.model.Item> itemFlux = itemService.getList();
-        return itemFlux.log().publishOn(Schedulers.newParallel("ItemMapper"))
-                .map(itemMapper::mapItem);
+    public Mono<ResponseEntity<Flux<Item>>> getItems(ServerWebExchange exchange) {
+        return Mono.just(
+                ResponseEntity.ok(
+                        itemService.getList()
+                                .map(ItemMapper.INSTANCE::mapItem)
+                ));
     }
 
     @Override
-    public Mono<Response> getHash(ServerWebExchange exchange) {
-        int hash = itemService.getListHash();
-        Response response = new Response();
-        response.setValue(String.valueOf(hash));
-        return Mono.just(response);
+    public Mono<ResponseEntity<Response>> getHash(ServerWebExchange exchange) {
+        return itemService.getListHash()
+                .map(hashValue -> new Response().value(String.valueOf(hashValue)))
+                .map(ResponseEntity::ok);
     }
 
     @Override
-    public Mono<Item> createItem(@Valid @RequestBody Mono<Item> item, ServerWebExchange exchange) {
-        return itemService.createItem(item.map(itemMapper::convertItem)).map(itemMapper::mapItem);
+    public Mono<ResponseEntity<Item>> createItem(@ApiParam(value = "item to be created", required = true) @Valid @RequestBody Mono<Item> item, ServerWebExchange exchange) {
+        return itemService.createItem(item.map(ItemMapper.INSTANCE::convertItem))
+                .map(ItemMapper.INSTANCE::mapItem)
+                .map(itemMono -> ResponseEntity.status(200).body(itemMono));
     }
 
     @Override
-    public Mono<Void> deleteItem(Integer id, ServerWebExchange exchange) {
-        itemService.deleteItemWithId(id).log().subscribe();
-        System.out.println("Deleted");
-        return Mono.empty();
+    public Mono<ResponseEntity<Void>> deleteItem(Integer id, ServerWebExchange exchange) {
+        return itemService.deleteItemWithId(id).map(obj -> ResponseEntity.noContent().build());
     }
 }

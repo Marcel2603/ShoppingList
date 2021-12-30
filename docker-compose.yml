@@ -1,0 +1,27 @@
+services:
+  postgres:
+    container_name: postgres
+    environment:
+      POSTGRES_ADDITIONAL_DATABASES: "shop:shop"
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: "postgres:14.1"
+    ports:
+    - "5432:5432"
+    volumes:
+    - "./scripts/create_multiple_db.sh:/docker-entrypoint-initdb.d/create_multiple_db.sh"
+  server:
+    build:
+      context: ./server
+    container_name: server
+    environment:
+      DB_PW: shop
+      DB_URL: postgres/shop
+      DB_USER: shop
+      SPRING_PROFILES_ACTIVE: compose
+    ports:
+    - "9000:9000"
+    - "9010:9010"
+    volumes:
+    - "./server/target/server.jar:/opt/app.jar:ro"
+version: '3.9'

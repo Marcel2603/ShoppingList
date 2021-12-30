@@ -66,13 +66,13 @@ paths:
         '200':
           description: All items from DB
           content:
-            text/event-stream:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Items"
         default:
           description: something bad happens
           content:
-            text/event-stream:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Error"
   /items/hash:
