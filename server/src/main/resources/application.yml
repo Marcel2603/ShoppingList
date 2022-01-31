@@ -4,7 +4,7 @@ logging:
     root: Info
 spring:
   r2dbc:
-    url: r2dbc:h2:mem:mydb;MODE=PostgreSQL
+    url: r2dbc:h2:mem:///mydb;MODE=PostgreSQL
     username: sa
     password: pw
 server:
