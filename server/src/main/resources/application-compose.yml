@@ -1,5 +1,14 @@
+database:
+  url: postgresql://${DB_URL}
+  username: ${DB_USER}
+  password: ${DB_PW}
 spring:
   r2dbc:
-    url: r2dbc:postgresql://${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PW}
+    url: r2dbc:${database.url}
+    username: ${database.username}
+    password: ${database.password}
+  liquibase:
+    change-log: classpath:/db/db.changelog.yaml
+    url: jdbc:${database.url}
+    user: ${database.username}
+    password: ${database.password}

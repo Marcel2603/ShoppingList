@@ -2,7 +2,7 @@ FROM alpine
 
 RUN apk update
 
-RUN apk add --no-cache openjdk11
+RUN apk add --no-cache openjdk17
 
 COPY target/server.jar /opt/app.jar
 

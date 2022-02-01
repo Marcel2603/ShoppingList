@@ -2,10 +2,20 @@ logging:
   level:
     de.herhold.server: DEBUG
     root: Info
+
+database:
+  name: mydb
+  username: sa
+  password: pw
 spring:
   r2dbc:
-    url: r2dbc:tc:postgresql:///mydb?TC_IMAGE_TAG=14.1
-    username: sa
-    password: pw
+    url: r2dbc:tc:postgresql:///${database.name}?TC_IMAGE_TAG=14.1
+    username: ${database.username}
+    password: ${database.password}
+  liquibase:
+    change-log: classpath:/db/db.changelog.yaml
+    url: jdbc:tc:postgresql:///${database.name}?TC_IMAGE_TAG=14.1
+    user: ${username}
+    password: ${database.password}
 server:
   port: 9000

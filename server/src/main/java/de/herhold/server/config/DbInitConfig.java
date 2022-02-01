@@ -11,13 +11,13 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 @Configuration
 @Slf4j
 public class DbInitConfig {
-    @Bean
-    public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
-        log.info("Loading Schema");
-        ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
-        initializer.setConnectionFactory(connectionFactory);
-        initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("db/schema.sql")));
-
-        return initializer;
-    }
+//    @Bean
+//    public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
+//        log.info("Loading Schema");
+//        ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
+//        initializer.setConnectionFactory(connectionFactory);
+//        initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("db/schema.sql")));
+//
+//        return initializer;
+//    }
 }
