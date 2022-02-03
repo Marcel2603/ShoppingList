@@ -23,7 +23,6 @@ public class LiquibaseConfiguration {
     public DataSource liquibaseDatasource() {
         String jdbcUrl = dataSourceConfiguration.getUrl().replace("r2dbc", "jdbc").replace("///", "//");
         jdbcUrl = jdbcUrl.replace(":postgres:", ":postgresql:");
-        System.out.println(dataSourceConfiguration);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(jdbcUrl);
         dataSource.setUsername(dataSourceConfiguration.getUsername());
@@ -38,15 +37,11 @@ public class LiquibaseConfiguration {
             SpringLiquibase liquibase = new SpringLiquibase();
             liquibase.setDataSource(dataSource);
             liquibase.setChangeLog("classpath:/db/db.changelog.yaml");
-            // This is because we are running the process manually. Don't let SpringLiquibase do it.
             liquibase.setShouldRun(true);
-
             liquibase.afterPropertiesSet();
             dataSource.getConnection().close();
         } catch (LiquibaseException | SQLException e) {
             e.printStackTrace();
         }
-
-        // This runs Liquibase
     }
 }
