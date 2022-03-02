@@ -1,5 +1,6 @@
 package de.herhold.server.controller;
 
+import de.herhold.liquibase_configuration.annotation.Traceable;
 import de.herhold.server.mapper.ItemMapper;
 import de.herhold.server.service.ItemService;
 import de.herhold.shopping_list.api.java_server.handler.ShoppingApi;
@@ -36,6 +37,12 @@ public class ShoppingListController implements ShoppingApi {
                         itemService.getList()
                                 .map(ItemMapper.INSTANCE::mapItem)
                 ));
+    }
+
+    @GetMapping("/test")
+    @Traceable
+    public Mono<ResponseEntity<Mono<String>>> getTEst(ServerWebExchange serverWebExchange) {
+        return Mono.just(ResponseEntity.ok(Mono.just("Test")));
     }
 
     @Override

@@ -1,17 +1,15 @@
-package de.herhold.server.config.database;
+package de.herhold.liquibase_configuration.configuration;
 
+import jakarta.annotation.PostConstruct;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Configuration
-@Slf4j
+//@Configuration
 public class LiquibaseConfiguration {
 
     private final DataSourceConfiguration dataSourceConfiguration;

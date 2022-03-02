@@ -16,6 +16,7 @@
     <modules>
         <module>api-generator</module>
         <module>server</module>
+        <module>liquibase-configuration</module>
     </modules>
 
 </project>
